@@ -1,26 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* DARK ACADEMIA (Default) */
+  --bg-main: #0a0908;
+  --bg-card: #49111c;
+  --text-main: #f2f4f3;
+  --border-main: #5e503f;
+  --accent-main: #a9927d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* THE FIX: Changed from .light to :root.light */
+:root.light {
+  --bg-main: #f2f4f3;
+  --bg-card: #ffffff;
+  --text-main: #0a0908;
+  --border-main: #a9927d;
+  --accent-main: #5e503f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-app-bg: var(--bg-main);
+  --color-app-card: var(--bg-card);
+  --color-app-text: var(--text-main);
+  --color-app-border: var(--border-main);
+  --color-app-accent: var(--accent-main);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--app-bg);
+  color: var(--app-text);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
