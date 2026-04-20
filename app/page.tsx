@@ -14,7 +14,7 @@ export default function Home() {
           <div className="w-full h-full bg-app-accent" />
         </div>
 
-        {/* 2. THEME TOGGLE (Placed floating since nav is gone) */}
+        {/* 2. THEME TOGGLE (Floating) */}
         <div className="relative z-50 w-full p-6 flex justify-end">
           <ThemeToggle />
         </div>
@@ -22,7 +22,7 @@ export default function Home() {
         {/* 3. MAIN CONTENT */}
         <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 items-center max-w-[95rem] mx-auto w-full px-6 lg:px-12 gap-8 lg:gap-12">
           
-          {/* LEFT SIDE: The Dynamic Stack */}
+          {/* LEFT SIDE: Text and Actions */}
           <div className="lg:col-span-1 flex flex-col items-center lg:items-start text-center lg:text-left z-20 pt-4 lg:pt-0">
             
             {/* A. TITLE */}
@@ -31,18 +31,18 @@ export default function Home() {
                 Study Canvas Pomodoro
               </h1>
               
-              {/* Desktop Subtitle (Hidden on mobile) */}
+              {/* Desktop Subtitle */}
               <p className="hidden lg:block text-lg md:text-xl lg:text-2xl font-bold text-app-accent tracking-tight max-w-sm mt-4">
                 Create art with friends while you focus to show off your study feats!
               </p>
             </div>
 
-            {/* B. IPHONE (Visible only in Portrait between Title and Waitlist) */}
+            {/* B. IPHONE (Portrait/Mobile Only: Width increased by 30%) */}
             <div className="block lg:hidden mb-10">
-               <div className="w-[220px] h-[450px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl relative">
-                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-app-border rounded-full z-20" />
+               <div className="w-[285px] h-[520px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl relative">
+                  <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                     <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Mobile App</span>
+                     <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Mobile App (Wide)</span>
                   </div>
                </div>
             </div>
@@ -63,12 +63,12 @@ export default function Home() {
               </button>
             </form>
 
-            {/* D. MOBILE SUBTITLE (Underneath waitlist, above iPad) */}
+            {/* D. MOBILE SUBTITLE (Waitlist > Subtitle > iPad) */}
             <p className="block lg:hidden text-lg font-bold text-app-accent tracking-tight max-w-xs mx-auto mt-10 mb-10">
               Create art with friends while you focus to show off your study feats!
             </p>
 
-            {/* E. IPAD (Visible only in Portrait at the bottom) */}
+            {/* E. IPAD (Portrait/Mobile Only) */}
             <div className="block lg:hidden w-full">
                <div className="w-[90vw] aspect-[4/3] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl mx-auto relative max-w-[600px]">
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
@@ -79,20 +79,20 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT SIDE: Desktop/Landscape Devices */}
+          {/* RIGHT SIDE: Device Mockups (Desktop/Landscape) */}
           <div className="hidden lg:block lg:col-span-2 relative w-full h-[500px] xl:h-[650px]">
             
-            {/* Phone Front */}
+            {/* Wide iPhone (Front) */}
             <div className="absolute bottom-[-10px] left-0 z-20">
-              <div className="w-[220px] xl:w-[280px] h-[450px] xl:h-[570px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-app-border rounded-full z-20" />
+              <div className="w-[285px] xl:w-[365px] h-[520px] xl:h-[640px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                   <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Mobile App</span>
+                   <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Wide Mobile App</span>
                 </div>
               </div>
             </div>
 
-            {/* iPad Back */}
+            {/* iPad (Back) */}
             <div className="absolute bottom-0 right-0 z-10">
               <div className="w-[600px] xl:w-[880px] h-[450px] xl:h-[660px] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
