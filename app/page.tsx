@@ -1,6 +1,7 @@
 import Features from "@/components/Features";
 import ThemeToggle from "@/components/ThemeToggle";
 import GalleryShowcase from "@/components/GalleryShowcase";
+import StudyCanvasDemo from "@/components/StudyCanvasDemo";
 
 export default function Home() {
   return (
@@ -37,12 +38,13 @@ export default function Home() {
               </p>
             </div>
 
-            {/* B. IPHONE (Portrait/Mobile Only: Width increased by 30%) */}
+            {/* B. IPHONE (Portrait/Mobile Only) */}
             <div className="block lg:hidden mb-10">
                <div className="w-[285px] h-[520px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl relative">
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                     <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Mobile App (Wide)</span>
+                     {/* The demo now scales itself automatically based on this container's width */}
+                     <StudyCanvasDemo />
                   </div>
                </div>
             </div>
@@ -87,7 +89,8 @@ export default function Home() {
               <div className="w-[285px] xl:w-[365px] h-[520px] xl:h-[640px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                   <span className="text-xs font-black opacity-40 uppercase tracking-widest text-center px-4">Wide Mobile App</span>
+                   {/* The demo now scales itself automatically based on this container's width */}
+                   <StudyCanvasDemo />
                 </div>
               </div>
             </div>

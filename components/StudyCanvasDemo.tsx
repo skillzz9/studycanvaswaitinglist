@@ -15,12 +15,10 @@ export default function StudyCanvasDemo() {
   const blocksPerLayer = 36;
   const totalSessionBlocks = 180;
   
-  // We start with 90 blocks revealed. 
-  // We set the Target to 91 so the Avatar immediately goes to work on page load.
   const [revealedCount, setRevealedCount] = useState(90);
   const [targetBlocksCount, setTargetBlocksCount] = useState(91); 
   const [secondsElapsed, setSecondsElapsed] = useState(1800); 
-  const studyImage = "/bunny.png"; 
+  const studyImage = "/demoImages/bunny.png"; 
 
   const FIXED_INDICES = useMemo(() => {
     const indices = [];
@@ -44,7 +42,6 @@ export default function StudyCanvasDemo() {
       setSecondsElapsed((prev) => prev + 1);
     }, 1000);
 
-    // CHANGED: Now triggers every 3 seconds (3000ms).
     const painter = setInterval(() => {
       setTargetBlocksCount((prev) => (prev < totalSessionBlocks ? prev + 1 : prev));
     }, 3000);
@@ -68,9 +65,21 @@ export default function StudyCanvasDemo() {
   const topLevel = currentLayerIndex + 2;
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center scale-[0.55] sm:scale-[0.7] lg:scale-[0.85] xl:scale-100 origin-center transition-all duration-500">
+    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ containerType: 'inline-size' }}>
       
-      <div className="relative flex flex-col items-center pb-40 w-[600px]">
+      <style>{`
+        /* Mobile iPhone */
+        .responsive-demo { transform: scale(0.52); }
+        
+        /* Desktop iPhone: Lowered from 0.72 to 0.65 to match mobile proportions perfectly */
+        @container (min-width: 320px) { .responsive-demo { transform: scale(0.65); } }
+        
+        /* iPad breakpoints left untouched */
+        @container (min-width: 500px) { .responsive-demo { transform: scale(0.9); } }
+        @container (min-width: 700px) { .responsive-demo { transform: scale(1); } }
+      `}</style>
+
+      <div className="responsive-demo relative flex flex-col items-center pb-40 w-[600px] origin-center transition-transform duration-500">
         
         {/* THE CANVAS */}
         <div className="w-[400px] h-[400px] relative shadow-2xl bg-white rounded-2xl border-4 border-neutral-800 overflow-hidden">
@@ -121,7 +130,6 @@ export default function StudyCanvasDemo() {
           globalStartTime={Date.now()}
         />
 
-        <Desk topPosition={600} />
       </div>
     </div>
   );
