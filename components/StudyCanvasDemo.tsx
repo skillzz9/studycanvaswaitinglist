@@ -5,10 +5,11 @@ import Level from "@/components/Level";
 import GridRevealMask from "@/components/GridRevealMask";
 import Avatar from "@/components/Avatar";
 import Stopwatch from "@/components/Stopwatch";
-import Desk from "@/components/Desk";
 
 export default function StudyCanvasDemo() {
   const [mounted, setMounted] = useState(false);
+
+  
 
   const gridSize = 6;
   const totalLayers = 5;
@@ -17,7 +18,7 @@ export default function StudyCanvasDemo() {
   
   const [revealedCount, setRevealedCount] = useState(90);
   const [targetBlocksCount, setTargetBlocksCount] = useState(91); 
-  const [secondsElapsed, setSecondsElapsed] = useState(1800); 
+  const [secondsElapsed, setSecondsElapsed] = useState(300); 
   const studyImage = "/demoImages/bunny.png"; 
 
   const FIXED_INDICES = useMemo(() => {
@@ -52,29 +53,22 @@ export default function StudyCanvasDemo() {
     };
   }, [mounted, totalSessionBlocks]);
 
-  if (!mounted) {
-    return (
-      <div className="w-[400px] h-[400px] bg-app-card border-4 border-app-border rounded-2xl flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-t-transparent border-app-text rounded-full opacity-20" />
-      </div>
-    );
-  }
+  if (!mounted) return null;
 
   const currentLayerIndex = Math.floor(revealedCount / blocksPerLayer);
   const baseLevel = currentLayerIndex + 1;
   const topLevel = currentLayerIndex + 2;
 
+  // THREE-WAY TURN LOGIC
+  // This modulo calculation determines which avatar index should be moving
+  const activeIndex = revealedCount % 3;
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden" style={{ containerType: 'inline-size' }}>
       
       <style>{`
-        /* Mobile iPhone */
         .responsive-demo { transform: scale(0.52); }
-        
-        /* Desktop iPhone: Lowered from 0.72 to 0.65 to match mobile proportions perfectly */
         @container (min-width: 320px) { .responsive-demo { transform: scale(0.65); } }
-        
-        /* iPad breakpoints left untouched */
         @container (min-width: 500px) { .responsive-demo { transform: scale(0.9); } }
         @container (min-width: 700px) { .responsive-demo { transform: scale(1); } }
       `}</style>
@@ -83,7 +77,6 @@ export default function StudyCanvasDemo() {
         
         {/* THE CANVAS */}
         <div className="w-[400px] h-[400px] relative shadow-2xl bg-white rounded-2xl border-4 border-neutral-800 overflow-hidden">
-          
           <div className="absolute inset-0 z-0 bg-[#F5F5F5]">
             <Level imageSrc={studyImage} level={baseLevel as any} />
           </div>
@@ -104,7 +97,7 @@ export default function StudyCanvasDemo() {
         <Stopwatch 
           secondsElapsed={secondsElapsed}
           totalMinutes={60}
-          workerCount={1}
+          workerCount={3}
           isSessionComplete={revealedCount >= totalSessionBlocks}
           onFinish={() => {}}
           onStart={() => {}} 
@@ -113,15 +106,52 @@ export default function StudyCanvasDemo() {
           totalSessionBlocks={totalSessionBlocks}
         />
 
-        {/* AVATAR */}
-        <Avatar 
-          key="demo-avatar"
+        {/* AVATAR 1: YOU (Index 0) */}
+         <Avatar 
+          key="demo-avatar-you"
           myIndex={0}
-          totalWorkers={1}
+          totalWorkers={3}
+          homeX={200} 
           revealedCount={revealedCount}
           userName="You"
           avatarSrc="/avatar.webp" 
-          targetBlocksCount={targetBlocksCount}
+          targetBlocksCount={activeIndex === 0 ? targetBlocksCount : revealedCount}
+          shuffledIndices={FIXED_INDICES} 
+          gridSize={gridSize}
+          onBlockComplete={() => setRevealedCount(prev => prev + 1)} 
+          lastSeen={Date.now()}
+          roomStatus="active"
+          globalStartTime={Date.now()}
+        />
+
+        {/* AVATAR 2: BUDDY A (Center of Canvas) */}
+        <Avatar 
+          key="demo-avatar-buddy-a"
+          myIndex={1}
+          totalWorkers={3}
+          homeX={300} 
+          revealedCount={revealedCount}
+          userName="Jack"
+          avatarSrc="/avatar2.webp" 
+          targetBlocksCount={activeIndex === 1 ? targetBlocksCount : revealedCount}
+          shuffledIndices={FIXED_INDICES} 
+          gridSize={gridSize}
+          onBlockComplete={() => setRevealedCount(prev => prev + 1)} 
+          lastSeen={Date.now()}
+          roomStatus="active"
+          globalStartTime={Date.now()}
+        />
+
+        {/* AVATAR 3: BUDDY B (Right Edge of Canvas) */}
+        <Avatar 
+          key="demo-avatar-buddy-b"
+          myIndex={2}
+          totalWorkers={3}
+          homeX={400} 
+          revealedCount={revealedCount}
+          userName="Tony"
+          avatarSrc="/avatar3.webp" 
+          targetBlocksCount={activeIndex === 2 ? targetBlocksCount : revealedCount}
           shuffledIndices={FIXED_INDICES} 
           gridSize={gridSize}
           onBlockComplete={() => setRevealedCount(prev => prev + 1)} 

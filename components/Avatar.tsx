@@ -4,6 +4,7 @@ import DustCloud from "./DustCloud";
 
 interface AvatarProps {
   myIndex: number;
+  totalWorkers: number;
   revealedCount: number;
   targetBlocksCount: number;
   shuffledIndices: number[];
@@ -12,10 +13,12 @@ interface AvatarProps {
   userName: string;
   avatarSrc: string;
   roomStatus: string;
+  homeX: number;
 }
 
 export default function Avatar({ 
   myIndex,
+  totalWorkers,
   revealedCount,
   avatarSrc,
   targetBlocksCount, 
@@ -23,16 +26,16 @@ export default function Avatar({
   gridSize, 
   onBlockComplete,
   userName,
-  roomStatus
+  roomStatus,
+  homeX
 }: AvatarProps) {
   
   const [isBusy, setIsBusy] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
   const [stopwatch, setStopwatch] = useState("00:00:00");
   const [isMounted, setIsMounted] = useState(false);
+  const [idleStep, setIdleStep] = useState(0); // Tracks pacing steps
 
-  // Home position centered around the 600px parent container
-  const homeX = 270 + (myIndex * 60); 
   const homeY = 550;
   const [state, setState] = useState({ x: homeX, y: homeY, facingLeft: false });
 
@@ -41,9 +44,33 @@ export default function Avatar({
     return () => clearTimeout(timer);
   }, []);
 
+  // 1. IDLE PATROL LOGIC
+  // This effect cycles the pacing step every 2 seconds only when not busy.
+  useEffect(() => {
+    if (isBusy || !isMounted || roomStatus !== "active") return;
+
+    const patrolTimer = setInterval(() => {
+      setIdleStep((prev) => (prev + 1) % 4);
+    }, 2000);
+
+    return () => clearInterval(patrolTimer);
+  }, [isBusy, isMounted, roomStatus]);
+
+  // This effect translates the idleStep into actual movement
+  useEffect(() => {
+    if (isBusy) return;
+
+    // Cycle: 0 (Home) -> 1 (Right) -> 2 (Home) -> 3 (Left)
+    let targetX = homeX;
+    if (idleStep === 1) targetX = homeX + 15;
+    if (idleStep === 3) targetX = homeX - 15;
+
+    moveAvatar(targetX, homeY);
+  }, [idleStep, isBusy, homeX]);
+
+  // 2. STOPWATCH LOGIC
   useEffect(() => {
     if (roomStatus !== "active") return;
-
     let seconds = 0;
     const interval = setInterval(() => {
       seconds++;
@@ -52,7 +79,6 @@ export default function Avatar({
       const s = Math.floor(seconds % 60).toString().padStart(2, "0");
       setStopwatch(`${h}:${m}:${s}`);
     }, 1000);
-
     return () => clearInterval(interval);
   }, [roomStatus]);
 
@@ -68,21 +94,15 @@ export default function Avatar({
     const localIndex = globalIndex % (gridSize * gridSize);
     const col = localIndex % gridSize;
     const row = Math.floor(localIndex / gridSize);
-    
-    // 400px canvas / 6 blocks = 66.66px per block
     const blockSize = 400 / gridSize; 
-    
-    // The parent container is 600px wide because of the Desk.
-    // The Canvas is 400px and centered.
-    // This means the left edge of the Canvas is exactly 100px inward.
     const canvasOffsetX = 100;
-    
     return { 
       x: canvasOffsetX + (col * blockSize) + (blockSize / 2), 
       y: (row * blockSize) + (blockSize / 2) 
     };
   };
 
+  // 3. ARTIST LOOP (Painting)
   useEffect(() => {
     if (targetBlocksCount > revealedCount && !isBusy && shuffledIndices.length > 0) {
       const runArtistLoop = async () => {
@@ -91,13 +111,11 @@ export default function Avatar({
         if (nextGlobalIndex === undefined) { setIsBusy(false); return; }
         
         const target = getCoords(nextGlobalIndex);
-        
         moveAvatar(target.x, target.y);
         await new Promise(r => setTimeout(r, 600)); 
         
         setIsPainting(true);
         await new Promise(r => setTimeout(r, 400)); 
-        
         onBlockComplete?.();
         
         await new Promise(r => setTimeout(r, 400)); 
@@ -109,7 +127,7 @@ export default function Avatar({
       };
       runArtistLoop();
     }
-  }, [targetBlocksCount, revealedCount, isBusy, shuffledIndices]);
+  }, [targetBlocksCount, revealedCount, isBusy, shuffledIndices, homeX]);
 
   return (
     <div 
@@ -122,9 +140,9 @@ export default function Avatar({
       }}
     >
       <div className="mb-1 flex flex-col items-center gap-0.5">
-        <div className="bg-white/90 border-2 border-app-border rounded px-1.5 py-0.5 shadow-sm">
-          <h1 className="text-[10px] font-black uppercase tracking-tighter text-app-text">
-            {userName} <span className="ml-1 opacity-40 font-mono">{stopwatch}</span>
+        <div className="bg-white border-2 border-app-border rounded px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+          <h1 className="text-[11px] font-black uppercase tracking-tight text-neutral-900">
+            {userName}
           </h1>
         </div>
       </div>
@@ -135,16 +153,22 @@ export default function Avatar({
             <DustCloud cellSize={80} />
           </div>
         )}
-        
         <img 
           src="/paintbrush.png" 
-          className={`absolute -top-3 -left-3 w-6 h-6 object-contain transition-opacity duration-300 z-10 ${isBusy ? "opacity-100" : "opacity-0"}`}
+          className={`absolute -top-3 -left-3 w-6 h-6 object-contain transition-opacity duration-300 z-10 ${isBusy ? "opacity-100" : "opacity-0"}`} 
         />
-
         <img 
           src={avatarSrc} 
           className={`w-16 h-16 object-contain ${isBusy && isPainting ? "animate-bounce" : ""}`} 
         />
+      </div>
+
+      <div className="mt-1 flex flex-col items-center gap-0.5">
+        <div className="bg-white border-2 border-app-border rounded px-2 py-0.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+          <span className="text-[10px] font-mono font-bold text-app-accent">
+            {stopwatch}
+          </span>
+        </div>
       </div>
     </div>
   );

@@ -21,10 +21,15 @@ export default function Stopwatch({
   onFinish
 }: StopwatchProps) {
   
+  // 1. CALCULATE 3X SPEED
+  const multiplier = Math.max(1, workerCount);
+  const effectiveElapsed = secondsElapsed * multiplier;
+  
   const totalSecondsGoal = totalMinutes * 60;
-  const secondsRemaining = Math.max(0, totalSecondsGoal - secondsElapsed);
+  
+  // 2. APPLY SPEED TO REMAINING TIME
+  const secondsRemaining = Math.max(0, totalSecondsGoal - effectiveElapsed);
 
-  // FORMATTING LOGIC
   const formatTime = (totalSeconds: number) => {
     const total = Math.floor(totalSeconds); 
     const hrs = Math.floor(total / 3600);
@@ -38,12 +43,10 @@ export default function Stopwatch({
     return `${hDisplay}${mDisplay}${sDisplay}`;
   };
 
-  // PROGRESS BAR CALCULATION
+  // 3. APPLY SPEED TO PROGRESS BAR
   const timeProgress = totalSecondsGoal > 0 
-    ? Math.min(100, (secondsElapsed / totalSecondsGoal) * 100) 
+    ? Math.min(100, (effectiveElapsed / totalSecondsGoal) * 100) 
     : 0;
-
-  const multiplier = Math.max(1, workerCount);
 
   return (
     <div className="w-[340px] md:w-[400px] relative overflow-hidden flex bg-app-card p-2 rounded-3xl border-4 border-app-border shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] z-20 items-center gap-4 justify-center font-sans transition-colors duration-300 mt-6">
@@ -54,11 +57,9 @@ export default function Stopwatch({
         style={{ width: `${timeProgress}%` }}
       />
 
-      {/* ACTIVE STATE */}
       {!isSessionComplete ? (
         <div className="flex items-center gap-3 md:gap-4 justify-center z-10 w-full">
           
-          {/* LIVE / START INDICATOR */}
           {roomStatus === "idle" ? (
             <button 
               onClick={onStart}
@@ -73,12 +74,11 @@ export default function Stopwatch({
             </div>
           )}
           
-          {/* TIMER */}
+          {/* TIMER DISPLAY */}
           <div className="w-32 md:w-48 tabular-nums text-center text-app-text uppercase tracking-widest text-2xl md:text-4xl font-black drop-shadow-sm">
             {formatTime(secondsRemaining)}
           </div>
           
-          {/* SPEED MULTIPLIER */}
           <div 
             className={`w-16 md:w-20 py-3 md:py-4 border-4 border-app-border rounded-3xl font-black uppercase transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] flex items-center justify-center
               ${multiplier > 1 ? "bg-app-accent text-app-bg" : "bg-app-bg text-app-accent"}
@@ -88,7 +88,6 @@ export default function Stopwatch({
           </div>
         </div>
       ) : (
-        /* FINISHED STATE */
         <div className="flex flex-1 items-center justify-between px-4 gap-4 z-10 py-2">
           <div className="flex flex-col text-left">
             <h2 className="text-xs md:text-sm font-black uppercase text-app-text leading-none">Session Over!</h2>

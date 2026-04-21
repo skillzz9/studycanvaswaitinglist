@@ -7,24 +7,24 @@ const featureData = [
   {
     id: 1,
     title: "Upload an image",
-    description: "Write the title, subject, and time and it creates an empty painting frame.",
+  description: "Write the title, subject, and time and it creates an empty painting frame. Pick an amount of time it should take to paint. Surprise your friends!",
   },
   {
     id: 2,
     title: "FOCUS",
-    description: "Your masterpiece will paint itself while you focus on your work.",
+    description: "Set a goal time for your session. Your masterpiece will paint itself while you focus on your work. Either contribute on your own, or with a study group.",
   },
   {
     id: 3,
     title: "Don't give up!",
-    description: "Leaving the app halfway will cause you to lose all your progress.",
+    description: "Progress is only saved after finishing the session. Everyone leaving the app halfway will cause you to lose all your progress. Make sure your friends lock in!",
   }
 ];
 
 export default function Features() {
   return (
     <section className="relative z-10 w-full max-w-7xl mx-auto px-6 py-12">
-      <h2 className="text-2xl md:text-4xl font-black text-center mb-12 tracking-tight uppercase italic">
+      <h2 className="text-2xl md:text-4xl font-black text-center mb-12 tracking-tight uppercase">
         How it works
       </h2>
 
@@ -49,6 +49,12 @@ export default function Features() {
               {feature.id === 3 && (
                 <div className="scale-90 md:scale-110 origin-bottom">
                   <BrokenCanvasDemo />
+                </div>
+              )}
+
+                            {feature.id === 4 && (
+                <div className="scale-90 md:scale-110 origin-bottom">
+                  <StaticPaintingModal />
                 </div>
               )}
             </div>

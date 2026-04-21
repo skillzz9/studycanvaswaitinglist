@@ -1,10 +1,45 @@
+"use client"
 import Features from "@/components/Features";
 import ThemeToggle from "@/components/ThemeToggle";
 import StudyCanvasDemo from "@/components/StudyCanvasDemo";
 import GalleryDisplay from "@/components/GalleryDisplay";
 import GalleryDemo from "@/components/GalleryDemo";
+import { useState } from "react";
 
 export default function Home() {
+
+  const [email, setEmail] = useState("");
+const [status, setStatus] = useState("idle");
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setStatus("loading");
+
+  // PASTE YOUR GOAL URL HERE
+  const SCRIPT_URL = process.env.NEXT_PUBLIC_WAITLIST_URL;
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors", // Required to bypass CORS for Google Apps Script
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    // With 'no-cors', we cannot read the response body. 
+    // If the request doesn't throw an error, we assume success.
+    setStatus("success");
+    setEmail("");
+    
+    // Optional: Reset to 'idle' after 5 seconds to allow another entry
+    setTimeout(() => setStatus("idle"), 5000);
+  } catch (error) {
+    console.error("Waitlist Error:", error);
+    setStatus("error");
+  }
+};
   return (
     <main className="bg-app-bg text-app-text relative min-h-screen w-full flex flex-col font-sans overflow-y-auto transition-colors duration-300 scroll-smooth">
       
@@ -35,8 +70,9 @@ export default function Home() {
               
               {/* Subtitle visible on Desktop XL only */}
               <p className="hidden xl:block text-lg md:text-xl xl:text-2xl font-bold text-app-accent tracking-tight max-w-sm mt-4">
-                Create art with friends while you focus to show off your study feats!
+                Make studying addictive by making art with your friends!
               </p>
+
             </div>
 
             {/* B. IPHONE (Visible on all devices below 1280px) */}
@@ -50,24 +86,43 @@ export default function Home() {
             </div>
 
             {/* C. WAITLIST FORM */}
-            <form className="flex flex-col gap-4 w-full max-w-md mx-auto xl:mx-0">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                required
-                className="w-full h-14 bg-app-card border-4 border-app-border rounded-xl px-4 font-bold text-app-text placeholder:text-app-text/50 focus:outline-none focus:border-app-accent transition-colors"
-              />
-              <button 
-                type="submit" 
-                className="w-full h-14 bg-app-card border-4 border-app-border rounded-xl flex items-center justify-center cursor-pointer hover:bg-app-text hover:text-app-bg transition-colors duration-200"
-              >
-                 <span className="text-xs font-black uppercase tracking-widest whitespace-nowrap">Join Waitlist</span>
-              </button>
-            </form>
+<form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto xl:mx-0">
+  <input 
+    type="email" 
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder={status === "success" ? "You are on the list!" : "Enter your email"} 
+    required
+    disabled={status === "loading" || status === "success"}
+    className="w-full h-14 bg-app-card border-4 border-app-border rounded-xl px-4 font-bold text-app-text placeholder:text-app-text/50 focus:outline-none focus:border-app-accent transition-colors disabled:opacity-50"
+  />
+  <button 
+    type="submit" 
+    disabled={status === "loading" || status === "success"}
+    className="w-full h-14 bg-app-card border-4 border-app-border rounded-xl flex items-center justify-center cursor-pointer hover:bg-app-text hover:text-app-bg transition-colors duration-200 disabled:cursor-not-allowed"
+  >
+     <span className="text-xs font-black uppercase tracking-widest whitespace-nowrap">
+       {status === "loading" ? "Processing..." : status === "success" ? "Subscribed!" : "Join Waitlist"}
+     </span>
+  </button>
+  
+  {status === "error" && (
+    <p className="text-red-500 text-[10px] font-black uppercase mt-2 tracking-widest">
+      Error: Please try again later.
+    </p>
+  )}
+</form>
 
             {/* D. MOBILE/TABLET SUBTITLE */}
             <p className="block xl:hidden text-lg font-bold text-app-accent tracking-tight max-w-xs mx-auto mt-10 mb-10">
-              Create art with friends while you focus to show off your study feats!
+              Make studying addictive by making art with your friends!
+            </p>
+
+                                        <h1 className="block xl:hidden text-4xl md:text-5xl xl:text-6xl font-black tracking-tight leading-none mb-3">
+                 Create and Collect!
+              </h1>
+                 <p className="block xl:hidden text-lg font-bold text-app-accent tracking-tight mx-auto mt-10 mb-10">
+              Zoom in and move around, go on, try it! Imagine what your moodboard could look like.
             </p>
 
             {/* E. IPAD (Visible on all devices below 1280px) */}

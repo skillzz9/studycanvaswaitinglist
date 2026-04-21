@@ -29,7 +29,21 @@ export default function GalleryDisplay() {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    
+    const handleResize = () => {
+      // Check for iPhone / Mobile portrait specifically
+      if (window.innerWidth < 768) {
+        // Dropped to 0.15 to ensure the full wall is visible on narrow screens
+        scale.set(0.15); 
+      } else {
+        scale.set(0.55);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [scale]);
 
   // GESTURE BINDING
   const bind = useGesture(
@@ -39,7 +53,8 @@ export default function GalleryDisplay() {
         y.set(dy);
       },
       onPinch: ({ offset: [dScale] }) => {
-        const clampedScale = Math.max(0.3, Math.min(dScale, 2.0));
+        // Lowered minimum clamp to 0.1 to give users total freedom
+        const clampedScale = Math.max(0.1, Math.min(dScale, 2.0));
         scale.set(clampedScale);
       },
     },
@@ -85,11 +100,10 @@ export default function GalleryDisplay() {
 
   return (
     <div 
-      {...(bind() as any)} // CRITICAL: Moved gesture listeners to the very top div
+      {...(bind() as any)} 
       className="relative w-full h-full transition-colors duration-500 overflow-hidden select-none touch-none cursor-grab active:cursor-grabbing"
       style={{ touchAction: 'none', backgroundColor }}
     >
-      {/* This inner div now simply follows the spring values */}
       <motion.div 
         className="absolute inset-0 flex items-center justify-center pointer-events-none"
         style={{ x, y, scale }}
