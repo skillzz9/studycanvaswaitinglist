@@ -2,6 +2,7 @@ import Features from "@/components/Features";
 import ThemeToggle from "@/components/ThemeToggle";
 import StudyCanvasDemo from "@/components/StudyCanvasDemo";
 import GalleryDisplay from "@/components/GalleryDisplay";
+import GalleryDemo from "@/components/GalleryDemo";
 
 export default function Home() {
   return (
@@ -117,6 +118,8 @@ export default function Home() {
       <div id="features" className="scroll-mt-20">
         <Features />
       </div>
+
+      <GalleryDemo/>
 
     </main>
   );

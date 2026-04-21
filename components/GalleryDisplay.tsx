@@ -23,7 +23,6 @@ export default function GalleryDisplay() {
   const [mounted, setMounted] = useState(false);
 
   // INTERACTIVE SPRINGS
-  // Initial scale is set to 0.55 to match your iPad portrait preference
   const x = useSpring(0, { stiffness: 150, damping: 30 });
   const y = useSpring(0, { stiffness: 150, damping: 30 });
   const scale = useSpring(0.55, { stiffness: 150, damping: 30 });
@@ -52,6 +51,7 @@ export default function GalleryDisplay() {
 
   const isDark = resolvedTheme === "dark";
   const themeProp = isDark ? "dark" : "light";
+  const backgroundColor = isDark ? "#3b2f2f" : "var(--bg-main)";
 
   const extraItems = [
     { type: 'window', x: 0, y: 0, rotate: 0, scale: 1.2 },
@@ -85,20 +85,20 @@ export default function GalleryDisplay() {
 
   return (
     <div 
-      className="relative w-full h-full bg-app-bg transition-colors duration-500 overflow-hidden select-none touch-none"
-      style={{ touchAction: 'none' }}
+      {...(bind() as any)} // CRITICAL: Moved gesture listeners to the very top div
+      className="relative w-full h-full transition-colors duration-500 overflow-hidden select-none touch-none cursor-grab active:cursor-grabbing"
+      style={{ touchAction: 'none', backgroundColor }}
     >
+      {/* This inner div now simply follows the spring values */}
       <motion.div 
-        {...(bind() as any)}
-        className="absolute inset-0 flex items-center justify-center cursor-grab active:cursor-grabbing"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none"
         style={{ x, y, scale }}
       >
-        
         {/* RENDER PROPS */}
         {extraItems.map((item, index) => (
           <div 
             key={`item-${index}`}
-            className="absolute flex items-center justify-center"
+            className="absolute flex items-center justify-center pointer-events-none"
             style={{ 
               transform: `translate(${item.x}px, ${item.y}px) rotate(${item.rotate}deg) scale(${item.scale})`,
               zIndex: item.type === 'window' ? 0 : (item.type === 'postit' ? 30 : 20) 
@@ -114,7 +114,7 @@ export default function GalleryDisplay() {
             {item.type === 'postit2' && <PostItNote theme={themeProp} initialText="Everything will be okay!" />}
             {item.type === 'todo' && (
               <div className="w-56 bg-app-card border-4 border-app-border p-5 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
-                <h3 className="font-black text-app-accent uppercase text-xs tracking-widest border-b-2 border-app-border pb-2 mb-3">Daily Feats</h3>
+                <h3 className="font-black text-app-accent uppercase text-xs tracking-widest border-b-2 border-app-border pb-2 mb-3">Todo list</h3>
                 <ul className="flex flex-col gap-3">
                   {["Maths textbook questions", "Meeting with English teacher", "2 hours on side project!"].map((text, i) => (
                     <li key={i} className="flex items-center gap-3">
@@ -136,7 +136,7 @@ export default function GalleryDisplay() {
         {paintings.map((p) => (
           <div 
             key={`painting-${p.id}`} 
-            className="absolute"
+            className="absolute pointer-events-none"
             style={{ transform: `translate(${p.x}px, ${p.y}px)`, zIndex: 10 }}
           >
             <PaintingFrame src={p.src} title={p.title} revealedCount={p.revealed} totalBlocks={180} shuffledIndices={[]} onClick={() => {}} />
@@ -148,7 +148,6 @@ export default function GalleryDisplay() {
             )}
           </div>
         ))}
-
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-black/10 dark:from-black/40 to-transparent pointer-events-none" />
     </div>
