@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+// FIXED: Imported TargetAndTransition type
+import { motion, TargetAndTransition } from "framer-motion";
 
 interface ShelfPlantProps {
   theme?: "light" | "dark";
 }
 
 export default function ShelfPlant({ theme }: ShelfPlantProps) {
-  // Matches your Post-it theme logic
   const themeClass = theme === "light" ? "light" : theme === "dark" ? "dark" : "";
 
-  const danceAnimation = {
+  // FIXED: Explicitly typed danceAnimation
+  const danceAnimation: TargetAndTransition = {
     rotate: [-5, 5, -5], 
     transition: {
       duration: 4, 
@@ -33,7 +34,6 @@ export default function ShelfPlant({ theme }: ShelfPlantProps) {
       >
         {/* Flower Head */}
         <div className="relative w-12 h-12 flex items-center justify-center">
-          {/* STATIC PINK PETALS: This color will no longer change with the theme */}
           {[0, 72, 144, 216, 288].map((deg) => (
             <div
               key={deg}
@@ -47,14 +47,14 @@ export default function ShelfPlant({ theme }: ShelfPlantProps) {
           <div className="relative z-10 w-4 h-4 rounded-full bg-yellow-400 border-2 border-black/5" />
         </div>
 
-        {/* Stem: Remains theme-reactive */}
+        {/* Stem */}
         <div className="w-1 h-20 bg-[var(--border-main)] -mt-2 rounded-full relative transition-colors duration-500">
           <div className="absolute top-8 -left-4 w-5 h-3 bg-[var(--border-main)] rounded-full rotate-[-30deg] opacity-80" />
           <div className="absolute top-10 -right-4 w-5 h-3 bg-[var(--border-main)] rounded-full rotate-[30deg] opacity-80" />
         </div>
       </motion.div>
 
-      {/* 2. THE POT: Body remains Cab Sav in dark mode (--bg-card) */}
+      {/* 2. THE POT */}
       <div className="relative z-20 -mt-6 flex flex-col items-center">
         <div className="w-20 h-4 bg-[var(--border-main)] rounded-t-sm border-b border-black/10 transition-colors duration-500" />
         <div 

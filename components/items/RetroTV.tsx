@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+// FIXED: Imported Variants type
+import { motion, Variants } from "framer-motion";
 
 interface RetroTVProps {
   theme?: "light" | "dark";
@@ -11,10 +12,10 @@ const RetroWireframeCube = () => {
   const size = 60; 
   const halfSize = size / 2;
   
-  // Using --accent-main for the cube edges
   const edgeStyle = "absolute inset-0 border-[1px] border-dashed border-[var(--accent-main)] opacity-90 rounded-sm backface-hidden"; 
 
-  const rotationVariants = {
+  // FIXED: Added explicit Variants type to the object
+  const rotationVariants: Variants = {
     animate: {
       rotateY: 360,
       rotateX: [15, 45, 15, -15, 15], 
@@ -53,7 +54,6 @@ const RetroWireframeCube = () => {
 };
 
 export default function RetroTV({ theme }: RetroTVProps) {
-  // Matches your Post-it theme logic exactly
   const themeClass = theme === "light" ? "light" : theme === "dark" ? "dark" : "";
 
   return (
@@ -61,22 +61,17 @@ export default function RetroTV({ theme }: RetroTVProps) {
       className={`relative flex flex-col items-center flex-shrink-0 select-none pointer-events-none ${themeClass}`}
       style={{ width: "160px", height: "140px" }}
     >
-      {/* 1. ANTENNAE: Mapped to --border-main */}
-
-      {/* 2. TV BODY: Case uses --bg-card (Cab Sav), Border uses --border-main */}
       <div className="w-full h-full bg-[var(--bg-card)] border-4 border-[var(--border-main)] rounded-2xl p-3 shadow-xl relative overflow-hidden transition-colors duration-500">
         <div className="relative w-full h-full bg-black rounded-lg overflow-hidden border-2 border-black/40 shadow-inner">
           
           <RetroWireframeCube />
 
-          {/* CRT SCANLINES */}
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "repeating-linear-gradient(0deg, black, black 1px, transparent 1px, transparent 2px)" }} />
           
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
         </div>
       </div>
 
-      {/* 3. FEET: Mapped to --border-main */}
       <div className="w-full flex justify-around -mt-1 px-4">
         <div className="w-3 h-2 bg-[var(--border-main)] rounded-b-md transition-colors duration-500" />
         <div className="w-3 h-2 bg-[var(--border-main)] rounded-b-md transition-colors duration-500" />

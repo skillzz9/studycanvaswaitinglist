@@ -51,12 +51,6 @@ export default function Features() {
                   <BrokenCanvasDemo />
                 </div>
               )}
-
-                            {feature.id === 4 && (
-                <div className="scale-90 md:scale-110 origin-bottom">
-                  <StaticPaintingModal />
-                </div>
-              )}
             </div>
             
             {/* 2. TEXT CONTENT */}

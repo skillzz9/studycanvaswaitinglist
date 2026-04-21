@@ -5,29 +5,34 @@ import DustCloud from "./DustCloud";
 interface AvatarProps {
   myIndex: number;
   totalWorkers: number;
+  homeX: number;
   revealedCount: number;
+  userName: string;
+  avatarSrc: string;
   targetBlocksCount: number;
   shuffledIndices: number[];
   gridSize: number;
-  onBlockComplete?: () => void;
-  userName: string;
-  avatarSrc: string;
+  onBlockComplete: () => void;
+  // ADD THESE THREE LINES:
+  lastSeen: number;
   roomStatus: string;
-  homeX: number;
+  globalStartTime: number;
 }
 
-export default function Avatar({ 
+export default function Avatar({
   myIndex,
   totalWorkers,
+  homeX,
   revealedCount,
-  avatarSrc,
-  targetBlocksCount, 
-  shuffledIndices, 
-  gridSize, 
-  onBlockComplete,
   userName,
-  roomStatus,
-  homeX
+  avatarSrc,
+  targetBlocksCount,
+  shuffledIndices,
+  gridSize,
+  onBlockComplete,
+  lastSeen,        // Destructure here
+  roomStatus,      // Destructure here
+  globalStartTime, // Destructure here
 }: AvatarProps) {
   
   const [isBusy, setIsBusy] = useState(false);

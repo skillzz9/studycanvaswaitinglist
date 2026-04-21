@@ -3,22 +3,26 @@ import React from "react";
 
 interface StopwatchProps {
   secondsElapsed: number;
-  totalMinutes: number; 
-  workerCount: number; 
-  isSessionComplete: boolean; 
-  roomStatus: string; 
-  onStart?: () => void;
-  onFinish?: () => void;
+  totalMinutes: number;
+  workerCount: number;
+  isSessionComplete: boolean;
+  onFinish: () => void;
+  onStart: () => void;
+  roomStatus: string;
+  revealedCount: number;
+  totalSessionBlocks: number;
 }
 
-export default function Stopwatch({ 
-  secondsElapsed, 
-  totalMinutes, 
-  workerCount, 
-  isSessionComplete, 
-  roomStatus, 
+export default function Stopwatch({
+  secondsElapsed,
+  totalMinutes,
+  workerCount,
+  isSessionComplete,
+  onFinish,
   onStart,
-  onFinish
+  roomStatus,
+  revealedCount,
+  totalSessionBlocks,
 }: StopwatchProps) {
   
   // 1. CALCULATE 3X SPEED
