@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import StudyCanvasDemo from "@/components/StudyCanvasDemo";
+import GalleryDisplay from "@/components/GalleryDisplay"
 
 export default function TestDemoPage() {
   return (
@@ -17,8 +18,8 @@ export default function TestDemoPage() {
       </div>
 
       {/* THE DEMO COMPONENT */}
-      <div className="w-full max-w-4xl bg-app-card border-4 border-app-border rounded-[3rem] shadow-2xl p-12 relative overflow-hidden flex items-center justify-center min-h-[700px]">
-        {/* Subtle grid background for the "Stage" feel */}
+      <div className="w-full max-w-4xl bg-app-card border-4 border-app-border rounded-[3rem] shadow-2xl p-6 relative overflow-hidden flex items-center justify-center min-h-[600px]">
+        {/* Subtle grid background */}
         <div 
           className="absolute inset-0 opacity-5" 
           style={{ 
@@ -27,8 +28,9 @@ export default function TestDemoPage() {
           }} 
         />
         
-        <div className="relative z-10 w-full flex justify-center">
-            <StudyCanvasDemo />
+        {/* FIX: Give this wrapper a height so GalleryDisplay can fill it */}
+        <div className="relative z-10 w-full h-[500px]">
+           <GalleryDisplay />
         </div>
       </div>
 

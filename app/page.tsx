@@ -1,7 +1,7 @@
 import Features from "@/components/Features";
 import ThemeToggle from "@/components/ThemeToggle";
-import GalleryShowcase from "@/components/GalleryShowcase";
 import StudyCanvasDemo from "@/components/StudyCanvasDemo";
+import GalleryDisplay from "@/components/GalleryDisplay";
 
 export default function Home() {
   return (
@@ -43,7 +43,6 @@ export default function Home() {
                <div className="w-[285px] h-[520px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl relative">
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                     {/* The demo now scales itself automatically based on this container's width */}
                      <StudyCanvasDemo />
                   </div>
                </div>
@@ -75,7 +74,7 @@ export default function Home() {
                <div className="w-[90vw] aspect-[4/3] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl mx-auto relative max-w-[600px]">
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
-                     <span className="text-sm font-black opacity-30 uppercase tracking-widest text-center px-4">iPad Interface</span>
+                     <GalleryDisplay />
                   </div>
                </div>
             </div>
@@ -89,7 +88,6 @@ export default function Home() {
               <div className="w-[285px] xl:w-[365px] h-[520px] xl:h-[640px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
-                   {/* The demo now scales itself automatically based on this container's width */}
                    <StudyCanvasDemo />
                 </div>
               </div>
@@ -100,7 +98,7 @@ export default function Home() {
               <div className="w-[600px] xl:w-[880px] h-[450px] xl:h-[660px] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
-                   <span className="text-sm font-black opacity-30 uppercase tracking-widest text-center px-4">iPad Interface</span>
+                   <GalleryDisplay />
                 </div>
               </div>
             </div>
@@ -123,8 +121,6 @@ export default function Home() {
       <div id="features" className="scroll-mt-20">
         <Features />
       </div>
-      
-      <GalleryShowcase />
 
     </main>
   );

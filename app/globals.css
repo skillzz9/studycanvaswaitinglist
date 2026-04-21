@@ -7,15 +7,22 @@
   --text-main: #f2f4f3;
   --border-main: #5e503f;
   --accent-main: #a9927d;
+
+  /* SKY COLORS (Night) */
+  --sky-top: #0a0908;
+  --sky-bottom: #49111c;
 }
 
-/* THE FIX: Changed from .light to :root.light */
 :root.light {
   --bg-main: #f2f4f3;
   --bg-card: #ffffff;
   --text-main: #0a0908;
   --border-main: #a9927d;
   --accent-main: #5e503f;
+
+  /* SKY COLORS (Day) */
+  --sky-top: #7dd3fc;
+  --sky-bottom: #dbeafe;
 }
 
 @theme {
@@ -24,11 +31,40 @@
   --color-app-text: var(--text-main);
   --color-app-border: var(--border-main);
   --color-app-accent: var(--accent-main);
+  
+  /* Additional mappings for wood/pot colors */
+  --color-wood-main: var(--wood-main);
+  --color-wood-border: var(--wood-border);
+  --color-pot-main: var(--pot-bg);
 }
 
-body {
-  background-color: var(--app-bg);
-  color: var(--app-text);
-  font-family: Arial, Helvetica, sans-serif;
-  transition: background-color 0.3s ease, color 0.3s ease;
+@layer base {
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: Arial, Helvetica, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  /* CRITICAL FOR RETRO TV CUBE */
+  .preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Custom scrollbar hiding for the Post-it */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
