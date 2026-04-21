@@ -62,10 +62,6 @@ export default function RetroTV({ theme }: RetroTVProps) {
       style={{ width: "160px", height: "140px" }}
     >
       {/* 1. ANTENNAE: Mapped to --border-main */}
-      <div className="absolute -top-8 flex gap-8">
-        <div className="w-0.5 h-10 bg-[var(--border-main)] rotate-[-20deg] origin-bottom transition-colors duration-500" />
-        <div className="w-0.5 h-10 bg-[var(--border-main)] rotate-[20deg] origin-bottom transition-colors duration-500" />
-      </div>
 
       {/* 2. TV BODY: Case uses --bg-card (Cab Sav), Border uses --border-main */}
       <div className="w-full h-full bg-[var(--bg-card)] border-4 border-[var(--border-main)] rounded-2xl p-3 shadow-xl relative overflow-hidden transition-colors duration-500">

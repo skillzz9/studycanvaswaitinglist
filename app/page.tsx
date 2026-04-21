@@ -8,38 +8,38 @@ export default function Home() {
     <main className="bg-app-bg text-app-text relative min-h-screen w-full flex flex-col font-sans overflow-y-auto transition-colors duration-300 scroll-smooth">
       
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-screen lg:h-screen w-full flex flex-col shrink-0 pb-20 lg:pb-0">
+      <section className="relative min-h-screen xl:h-screen w-full flex flex-col shrink-0 pb-20 xl:pb-0">
         
         {/* BACKGROUND */}
         <div className="absolute inset-0 z-0 flex items-center justify-center opacity-10 md:opacity-20 pointer-events-none">
           <div className="w-full h-full bg-app-accent" />
         </div>
 
-        {/* 2. THEME TOGGLE (Floating) */}
+        {/* 2. THEME TOGGLE */}
         <div className="relative z-50 w-full p-6 flex justify-end">
           <ThemeToggle />
         </div>
 
-        {/* 3. MAIN CONTENT */}
-        <div className="relative z-10 flex-1 grid grid-cols-1 lg:grid-cols-3 items-center max-w-[95rem] mx-auto w-full px-6 lg:px-12 gap-8 lg:gap-12">
+        {/* 3. MAIN CONTENT: Grid now triggers only at XL (1280px+) */}
+        <div className="relative z-10 flex-1 grid grid-cols-1 xl:grid-cols-3 items-center max-w-[95rem] mx-auto w-full px-6 xl:px-12 gap-8 xl:gap-12">
           
           {/* LEFT SIDE: Text and Actions */}
-          <div className="lg:col-span-1 flex flex-col items-center lg:items-start text-center lg:text-left z-20 pt-4 lg:pt-0">
+          <div className="xl:col-span-1 flex flex-col items-center xl:items-start text-center xl:text-left z-20 pt-4 xl:pt-0">
             
             {/* A. TITLE */}
-            <div className="flex flex-col items-center lg:items-start w-full mb-6 lg:mb-4">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-none">
+            <div className="flex flex-col items-center xl:items-start w-full mb-6 xl:mb-4">
+              <h1 className="text-4xl md:text-5xl xl:text-6xl font-black tracking-tight leading-none">
                 Study Canvas Pomodoro
               </h1>
               
-              {/* Desktop Subtitle */}
-              <p className="hidden lg:block text-lg md:text-xl lg:text-2xl font-bold text-app-accent tracking-tight max-w-sm mt-4">
+              {/* Subtitle visible on Desktop XL only */}
+              <p className="hidden xl:block text-lg md:text-xl xl:text-2xl font-bold text-app-accent tracking-tight max-w-sm mt-4">
                 Create art with friends while you focus to show off your study feats!
               </p>
             </div>
 
-            {/* B. IPHONE (Portrait/Mobile Only) */}
-            <div className="block lg:hidden mb-10">
+            {/* B. IPHONE (Visible on all devices below 1280px) */}
+            <div className="block xl:hidden mb-10">
                <div className="w-[285px] h-[520px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl relative">
                   <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
@@ -49,7 +49,7 @@ export default function Home() {
             </div>
 
             {/* C. WAITLIST FORM */}
-            <form className="flex flex-col gap-4 w-full max-w-md mx-auto lg:mx-0">
+            <form className="flex flex-col gap-4 w-full max-w-md mx-auto xl:mx-0">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
@@ -64,14 +64,14 @@ export default function Home() {
               </button>
             </form>
 
-            {/* D. MOBILE SUBTITLE (Waitlist > Subtitle > iPad) */}
-            <p className="block lg:hidden text-lg font-bold text-app-accent tracking-tight max-w-xs mx-auto mt-10 mb-10">
+            {/* D. MOBILE/TABLET SUBTITLE */}
+            <p className="block xl:hidden text-lg font-bold text-app-accent tracking-tight max-w-xs mx-auto mt-10 mb-10">
               Create art with friends while you focus to show off your study feats!
             </p>
 
-            {/* E. IPAD (Portrait/Mobile Only) */}
-            <div className="block lg:hidden w-full">
-               <div className="w-[90vw] aspect-[4/3] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl mx-auto relative max-w-[600px]">
+            {/* E. IPAD (Visible on all devices below 1280px) */}
+            <div className="block xl:hidden w-full">
+               <div className="w-[90vw] aspect-[4/3] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl mx-auto relative max-w-[600px] md:max-w-[750px]">
                   <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
                   <div className="w-full h-full bg-app-bg rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
                      <GalleryDisplay />
@@ -80,12 +80,12 @@ export default function Home() {
             </div>
           </div>
 
-          {/* RIGHT SIDE: Device Mockups (Desktop/Landscape) */}
-          <div className="hidden lg:block lg:col-span-2 relative w-full h-[500px] xl:h-[650px]">
+          {/* RIGHT SIDE: Device Mockups (High-end Desktop Only) */}
+          <div className="hidden xl:block xl:col-span-2 relative w-full h-[650px]">
             
             {/* Wide iPhone (Front) */}
             <div className="absolute bottom-[-10px] left-0 z-20">
-              <div className="w-[285px] xl:w-[365px] h-[520px] xl:h-[640px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
+              <div className="w-[365px] h-[640px] bg-app-card border-[8px] border-app-border rounded-[2.5rem] p-2 flex flex-col items-center transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-4 left-1/2 -translate-x-1/2 w-24 h-4 bg-app-border rounded-full z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.8rem] flex flex-col items-center justify-center relative overflow-hidden">
                    <StudyCanvasDemo />
@@ -95,7 +95,7 @@ export default function Home() {
 
             {/* iPad (Back) */}
             <div className="absolute bottom-0 right-0 z-10">
-              <div className="w-[600px] xl:w-[880px] h-[450px] xl:h-[660px] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl">
+              <div className="w-[880px] h-[660px] bg-app-card border-[10px] border-app-border rounded-[2.5rem] p-3 flex flex-col transition-colors duration-300 shadow-2xl">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-app-border z-20" />
                 <div className="w-full h-full bg-app-bg rounded-[1.5rem] flex items-center justify-center relative overflow-hidden">
                    <GalleryDisplay />
@@ -107,17 +107,13 @@ export default function Home() {
         </div>
 
         {/* 4. SCROLL DOWN ARROW */}
-        <div className="relative z-30 pb-10 flex justify-center w-full mt-auto hidden lg:flex">
-          <a 
-            href="#features" 
-            className="w-12 h-12 rounded-full border-4 border-app-border bg-app-card flex items-center justify-center cursor-pointer hover:bg-app-text hover:text-app-bg transition-colors duration-200 shadow-lg"
-          >
+        <div className="relative z-30 pb-10 flex justify-center w-full mt-auto hidden xl:flex">
+          <a href="#features" className="w-12 h-12 rounded-full border-4 border-app-border bg-app-card flex items-center justify-center cursor-pointer hover:bg-app-text hover:text-app-bg transition-colors duration-200 shadow-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </a>
         </div>
       </section>
 
-      {/* CONTENT SECTIONS */}
       <div id="features" className="scroll-mt-20">
         <Features />
       </div>
