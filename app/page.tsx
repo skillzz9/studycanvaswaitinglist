@@ -7,6 +7,7 @@ import GalleryDemo from "@/components/GalleryDemo";
 import React, { useState } from "react"; // Added React import for the type
 import { db } from "@/firebase"; // Adjust this path to your firebase.ts file
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { submitToWaitlist } from "@/app/actions";
 
 export default function Home() {
 
@@ -15,31 +16,27 @@ const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("
 
   // FIXED: Explicitly typed 'e' to avoid the implicit 'any' error
 const handleSubmit = async (e: React.FormEvent) => {
+  // 1. STOP THE PAGE RELOAD
   e.preventDefault();
   
-  // 1. Enter loading state
+  // 2. SHOW PROGRESS
   setStatus("loading");
 
   try {
-    // 2. Reference the 'waitlist' collection (Firestore creates it automatically on first write)
-    const waitlistRef = collection(db, "waitlist");
-
-    // 3. Add the document
-    await addDoc(waitlistRef, {
-      email: email.toLowerCase().trim(),
-      timestamp: serverTimestamp(), // Best practice: use server time, not client time
-      userAgent: window.navigator.userAgent, // Optional: helpful for debugging bot activity
-    });
-
-    // 4. Success state
-    setStatus("success");
-    setEmail(""); // Clear the input for a clean look
-  } catch (error) {
-    console.error("Waitlist Submission Error:", error);
-    setStatus("error");
+    // 3. CALL THE SERVER ACTION
+    const result = await submitToWaitlist(email); 
     
-    // Auto-reset error after 4 seconds so they can try again
-    setTimeout(() => setStatus("idle"), 4000);
+    if (result.success) {
+      setStatus("success");
+      setEmail(""); // Optional: clear the field
+    } else {
+      // Handle the case where the server caught an error
+      setStatus("error");
+    }
+  } catch (err) {
+    // Handle the case where the network itself failed
+    console.error("Network error:", err);
+    setStatus("error");
   }
 };
 
