@@ -5,38 +5,43 @@ import StudyCanvasDemo from "@/components/StudyCanvasDemo";
 import GalleryDisplay from "@/components/GalleryDisplay";
 import GalleryDemo from "@/components/GalleryDemo";
 import React, { useState } from "react"; // Added React import for the type
+import { db } from "@/firebase"; // Adjust this path to your firebase.ts file
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function Home() {
 
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("idle");
+const [email, setEmail] = useState("");
+const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   // FIXED: Explicitly typed 'e' to avoid the implicit 'any' error
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus("loading");
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  
+  // 1. Enter loading state
+  setStatus("loading");
 
-    const SCRIPT_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+  try {
+    // 2. Reference the 'waitlist' collection (Firestore creates it automatically on first write)
+    const waitlistRef = collection(db, "waitlist");
 
-    try {
-      await fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+    // 3. Add the document
+    await addDoc(waitlistRef, {
+      email: email.toLowerCase().trim(),
+      timestamp: serverTimestamp(), // Best practice: use server time, not client time
+      userAgent: window.navigator.userAgent, // Optional: helpful for debugging bot activity
+    });
 
-      setStatus("success");
-      setEmail("");
-      
-      setTimeout(() => setStatus("idle"), 5000);
-    } catch (error) {
-      console.error("Waitlist Error:", error);
-      setStatus("error");
-    }
-  };
+    // 4. Success state
+    setStatus("success");
+    setEmail(""); // Clear the input for a clean look
+  } catch (error) {
+    console.error("Waitlist Submission Error:", error);
+    setStatus("error");
+    
+    // Auto-reset error after 4 seconds so they can try again
+    setTimeout(() => setStatus("idle"), 4000);
+  }
+};
 
   return (
     <main className="bg-app-bg text-app-text relative min-h-screen w-full flex flex-col font-sans overflow-y-auto transition-colors duration-300 scroll-smooth">
